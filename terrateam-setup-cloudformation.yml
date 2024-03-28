@@ -2,6 +2,9 @@ Parameters:
   GithubOrg:
     Description: The GitHub organization for which the OIDC provider is set up
     Type: String
+  RoleArn:
+    Description: The Policy ARN to attach to the IAM role
+    Type: String
 Resources:
   GithubOIDCProvider:
     Type: 'AWS::IAM::OIDCProvider'
@@ -12,9 +15,6 @@ Resources:
       ThumbprintList:
         - 6938fd4d98bab03faadb97b34396831e3780aea1
         - 1c58a3a8518e8759bf075b76b750d4f2df264fcd
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 1c4c1068-aece-4b6b-8f89-dc9ee78cd2b3
   TerrateamRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -33,4 +33,4 @@ Resources:
               StringEquals:
                 'token.actions.githubusercontent.com:aud': sts.amazonaws.com
       ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/PowerUserAccess'
+        - !Sub '${RoleArn}'
